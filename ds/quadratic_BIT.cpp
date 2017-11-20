@@ -66,7 +66,7 @@ int main() {
     
     //prints: 0   0   0   0   0   0   0   0   0   0
     for(int a = 1; a <= 10; a++) {
-        printf("%-4i", qb.query(a,a));
+        printf("%-4lld", qb.query(a,a));
     }
     printf("\n");
     
@@ -75,7 +75,7 @@ int main() {
     //prints: 0   0   2   4   6   0   0   0   0   0
     //diff:   0   0   +2  +4  +6  0   0   0   0   0
     for(int a = 1; a <= 10; a++) {
-        printf("%-4i", qb.query(a,a));
+        printf("%-4lld", qb.query(a,a));
     }
     printf("\n");
     
@@ -83,7 +83,7 @@ int main() {
     //prints: 0   0   2   4   11  10  15  0   0   0
     //diff:   0   0   0   0   +5  +10 +15 0   0   0
     for(int a = 1; a <= 10; a++) {
-        printf("%-4i", qb.query(a,a));
+        printf("%-4lld", qb.query(a,a));
     }
     printf("\n");
 }
