@@ -39,7 +39,6 @@ int main(){
             }
             for(int a = 0; a < 26; a++){
                 if(!incl.count(char(a + 'a'))){
-                    // cout << "Remove " << char(a + 'a') << "\n";
                     allow[a] = false;
                 }
             }
@@ -53,15 +52,12 @@ int main(){
         int cnt = 0;
         for(int a = 0; a < 26; a++){
             if(allow[a]){
-                // cout << "Allow " << char(a + 'a') << "\n";
                 cnt++;
             }
         }
         if(cnt == 1){
-            // cout << "Found uniq!\n";
             uniq_det = true;
         }
-        // cout << "-----\n";
     }
     cout << ans;
 }
