@@ -1,3 +1,3 @@
-#Atcoder
+# Atcoder
 
 Finding the problem ID on atcoder is not intuitively clear. Like codeforces, a single problem may be used in many different contests. For example, the problem Wide Flip was used in both the [ABC](https://abc083.contest.atcoder.jp/tasks/arc088_b) and the [ARC](https://arc088.contest.atcoder.jp/tasks/arc088_b) contests. In this case, we just look at the end of the URL, where it ends in "arc088_b", telling us that it should be labelled under /ARC/088/B.
