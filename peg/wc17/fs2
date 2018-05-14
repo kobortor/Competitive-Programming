@@ -1,0 +1,58 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define allof(x) (x).begin(), (x).end()
+
+typedef long long ll;
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+
+const int MAXN = 1e5 + 5;
+
+int dsu[MAXN];
+int find(int x){
+    return dsu[x] == x ? x : dsu[x] = find(dsu[x]);
+}
+
+int main(){
+    cin.tie(0);
+    cin.sync_with_stdio(0);
+
+    int N, M;
+    cin >> N >> M;
+
+    for(int a = 1; a <= N; a++){
+        dsu[a] = a;
+    }
+
+    vector<pair<int, pii>> edges;
+    while(M--){
+        int Ai, Bi, Ci;
+        cin >> Ai >> Bi >> Ci;
+        edges.push_back({Ci, pii(Ai, Bi)});
+    }
+    sort(allof(edges));
+    reverse(allof(edges));
+
+    ll ans = 0;
+    for(auto au : edges){
+        int Ai = au.second.first;
+        int Bi = au.second.second;
+        int Ci = au.first;
+
+        int fa = find(Ai);
+        int fb = find(Bi);
+        if(fa != fb || Ci > 0){
+            dsu[fa] = fb;
+            ans += Ci;
+        }
+    }
+    for(int a = 2; a <= N; a++){
+        if(find(a) != find(a-1)){
+            cout << "Impossible";
+            return 0;
+        }
+    }
+    cout << ans;
+}

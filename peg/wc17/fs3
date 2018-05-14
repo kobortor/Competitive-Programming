@@ -1,0 +1,109 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define allof(x) (x).begin(), (x).end()
+
+typedef long long ll;
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+
+const int MAXN = 205;
+
+vector<pair<int, bool>> adj[MAXN];
+
+int gcd(int a, int b){
+    while(a % b){
+        a %= b;
+        swap(a, b);
+    }
+    return b;
+}
+
+const int LIM = 64;
+
+vector<int> vals;
+int GCD[LIM + 1][LIM + 1];
+int dp[MAXN][LIM + 1];
+
+void solve(int pos, int par){
+    for(int a = 0; a < LIM; a++){
+        dp[pos][a] = vals[a];
+    }
+
+    for(auto p : adj[pos]){
+        if(p.first == par){
+            continue;
+        }
+        solve(p.first, pos);
+        for(int a = 0; a < LIM; a++){
+            if(dp[pos][a] == -1){
+                continue;
+            }
+            int minv = 2e9;
+            for(int b = 0; b < LIM; b++){
+                int G = GCD[a][b];
+                if(G == 1 && p.second == 0 && dp[p.first][b] != -1){
+                    minv = min(minv, dp[p.first][b]);
+                }
+                if(G > 1 && p.second == 1 && dp[p.first][b] != -1){
+                    minv = min(minv, dp[p.first][b]);
+                }
+            }
+
+            if(minv == 2e9){
+                dp[pos][a] = -1;
+            } else {
+                dp[pos][a] += minv;
+            }
+        }
+    }
+}
+
+int main(){
+    cin.tie(0);
+    cin.sync_with_stdio(0);
+
+    vector<int> primes = {2,3,5,7,11,13};
+    for(int a = 1; vals.size() < LIM; a++){
+        int tmp = a;
+        bool good = true;
+        for(int i : primes){
+            int cnt = 0;
+            while(tmp % i == 0){
+                tmp /= i;
+                cnt++;
+            }
+            if(cnt > 1){
+                good = false;
+            }
+        }
+        if(good && tmp == 1){
+            vals.push_back(a);
+        }
+    }
+
+    int N;
+    cin >> N;
+    for(int a = 1; a <= N - 1; a++){
+        int Ai, Bi, Ci;
+        cin >> Ai >> Bi >> Ci;
+        adj[Ai].push_back({Bi, Ci});
+        adj[Bi].push_back({Ai, Ci});
+    }
+
+    for(int a = 0; a < LIM; a++){
+        for(int b = 0; b < LIM; b++){
+            GCD[a][b] = gcd(vals[a], vals[b]);
+        }
+    }
+
+    solve(1, -1);
+    int ans = 2e9;
+    for(int a = 0; a < LIM; a++){
+        if(dp[1][a] != -1){
+            ans = min(ans, dp[1][a]);
+        }
+    }
+    cout << ans;
+}

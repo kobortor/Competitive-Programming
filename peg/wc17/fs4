@@ -1,0 +1,102 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define allof(x) (x).begin(), (x).end() 
+typedef long long ll;
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+
+const int MAXN = 2e5 + 5;
+
+int N, M;
+
+struct BIT {
+    ll data[MAXN];
+    void update(int pos, int val){
+        while(pos < MAXN){
+            data[pos] += val;
+            pos += pos & -pos;
+        }
+    }
+    ll sum(int pos){
+        ll ans = 0;
+        while(pos){
+            ans += data[pos];
+            pos -= pos & -pos;
+        }
+        return ans;
+    }
+} citizen, building, total;
+
+struct query {
+    int X, L, R, idx;
+    bool operator<(const query &q) const {
+        return X < q.X;
+    }
+};
+vector<query> queries;
+vector<pair<pll, ll>> tower;
+
+double out[MAXN];
+
+int main(){
+    cin.tie(0);
+    cin.sync_with_stdio(0);
+
+    cin >> N;
+    for(int a = 1; a <= N; a++){
+        pll stats;
+        cin >> stats.first; //height
+        cin >> stats.second; //citizens
+        total.update(a, stats.second);
+        tower.push_back({stats, a});
+    }
+    sort(allof(tower));
+    reverse(allof(tower));
+
+    cin >> M;
+    for(int a = 1; a <= M; a++){
+        query q;
+        cin >> q.X >> q.L >> q.R;
+        q.idx = a;
+        queries.push_back(q);
+    }
+    sort(allof(queries));
+
+    int back = 0;
+    int frnt = 0;
+
+    ll base = 0;
+    for(query q : queries){
+        if(q.X != 0){
+            while(frnt <= N && tower[frnt].first.first >= tower[q.X-1].first.first){
+                citizen.update(tower[frnt].second, tower[frnt].first.second);
+                building.update(tower[frnt].second, 1);
+                frnt++;
+            }
+            while(back <= N && tower[back].first.first > tower[q.X-1].first.first){
+                citizen.update(tower[back].second, -tower[back].first.second);
+                total.update(tower[back].second, -tower[back].first.second);
+                building.update(tower[back].second, -1);
+                base += tower[back].first.second; //guarenteed to die
+                back++;
+            }
+        }
+        ll extra = q.X - back;
+        double ans = base;
+        ans += total.sum(q.R) - total.sum(q.L - 1);
+
+        ll building_outside = frnt - back;
+        ll citizen_outside = citizen.sum(MAXN - 1) - (citizen.sum(q.R) - citizen.sum(q.L - 1));
+        
+        if(building_outside != 0){
+            ans += (double)citizen_outside * (double)extra / building_outside;
+        }
+        out[q.idx] = ans;
+    }
+    for(int a = 1; a <= M; a++){
+        cout << fixed << setprecision(15) << out[a] << "\n";
+    }
+
+}
