@@ -8,7 +8,7 @@ typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 
-const int MAXN = 2e5 + 5;
+const int MAXN = 1e5 + 5;
 
 int N, K, M;
 vector<pii> guards;
