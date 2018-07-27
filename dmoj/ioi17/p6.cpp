@@ -105,6 +105,20 @@ long long minimum_walk(vector<int> p, int s){
             pq[0].pop_back();
             unseen.erase(pos);
 
+            int minp = min(pos, p[pos]);
+            int maxp = max(pos, p[pos]);
+
+            auto iter = unseen.lower_bound(minp);
+            auto first = iter;
+            while(iter != unseen.end() && *iter <= maxp){
+                if(dist[*iter] > curdist){
+                    dist[*iter] = curdist;
+                    pq[0].push_back(*iter);
+                }
+                iter++;
+            }
+            unseen.erase(first, iter);
+
             if(pos != 0 && dist[pos - 1] > curdist + 1){
                 dist[pos - 1] = curdist + 1;
                 pq[1].push_back(pos - 1);
@@ -112,19 +126,6 @@ long long minimum_walk(vector<int> p, int s){
             if(pos != n - 1 && dist[pos + 1] > curdist + 1){
                 dist[pos + 1] = curdist + 1;
                 pq[1].push_back(pos + 1);
-            }
-
-            int minp = min(pos, p[pos]);
-            int maxp = max(pos, p[pos]);
-
-            auto iter = unseen.lower_bound(minp);
-            while(iter != unseen.end() && *iter <= maxp){
-                if(dist[*iter] > curdist){
-                    dist[*iter] = curdist;
-                    pq[0].push_back(*iter);
-                }
-
-                unseen.erase(iter++);
             }
         }
 
