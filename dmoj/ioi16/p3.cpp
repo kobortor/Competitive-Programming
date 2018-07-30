@@ -133,28 +133,3 @@ long long find_shortcut(int n, int l[], int d[], int c){
     }
     return lo;
 }
-
-#ifndef ONLINE_JUDGE
-int main(){
-    cin.tie(0);
-    cin.sync_with_stdio(0);
-
-    int n, c;
-    cin >> n >> c;
-
-    int *l = new int[n - 1];
-    for(int a = 0; a < n - 1; a++){
-        cin >> l[a];
-    }
-
-    int *d = new int[n];
-    for(int a = 0; a < n; a++){
-        cin >> d[a];
-    }
-
-    cout << find_shortcut(n, l, d, c) << endl;
-
-    delete[] l;
-    delete[] d;
-}
-#endif
