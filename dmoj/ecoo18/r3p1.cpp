@@ -61,8 +61,6 @@ int main(){
     cin.tie(0);
     cin.sync_with_stdio(0);
 
-    assert(freopen("DATA12.txt", "r", stdin));
-
     fact[0] = 1;
     for(int a = 1; a < MAXN; a++){
         fact[a] = fact[a-1] * a % mod;

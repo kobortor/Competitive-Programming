@@ -56,7 +56,7 @@ void testcase(){
 
     for(int a = 1; a <= N; a++){
         for(pair<int, long double> &p : adj[a]){
-            if(best[p.first] > best[a] + p.second){
+            if(best[p.first] < 1e5 && best[p.first] > best[a] + p.second){
                 dfs(p.first);
             }
         }
@@ -72,8 +72,6 @@ void testcase(){
 int main(){
     cin.tie(0);
     cin.sync_with_stdio(0);
-
-    assert(freopen("DATA31.txt", "r", stdin));
 
     const int NTEST = 10;
     for(int a = 1; a <= NTEST; a++){

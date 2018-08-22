@@ -62,8 +62,6 @@ int main(){
     cin.tie(0);
     cin.sync_with_stdio(0);
 
-    freopen("DATA31.txt", "r", stdin);
-
     for(int a = 2; a < MAXN; a++){
         if(!sieve[a]){
             primes.push_back(a);

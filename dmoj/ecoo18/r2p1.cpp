@@ -59,8 +59,6 @@ int main(){
     cin.tie(0);
     cin.sync_with_stdio(0);
 
-    freopen("DATA11.txt", "r", stdin);
-
     const int MAX_CASE = 10;
     for(int a = 1; a <= MAX_CASE; a++){
         testcase();
