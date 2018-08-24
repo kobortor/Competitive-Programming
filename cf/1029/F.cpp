@@ -9,33 +9,25 @@ typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 
 ll A, B;
-vector<ll> factor(ll x){
-    vector<ll> ans;
+vector<pll> factor(ll x){
+    vector<pll> ans;
     for(ll a = 1; a * a <= x; a++){
         if(x % a == 0){
-            ans.push_back(a);
+            ans.push_back({a, x / a});
         }
     }
-    return ans;
+    return move(ans);
 }
 
-bool solve(ll x, ll y, const vector<ll> &F, ll V){
-    if(x > y){
-        swap(x, y);
-    }
-
+bool solve(ll x, ll y, const vector<pll> &F){
     int lo = 0, hi = F.size() - 1;
     while(lo <= hi){
         int mid = (lo + hi) / 2;
-        ll i = F[mid];
-        ll j = V / F[mid];
-        assert(i <= j);
-
-        if(i <= x && j <= y){
+        if(F[mid].first <= x && F[mid].second <= y){
             return true;
         }
 
-        if(i > x){
+        if(F[mid].first > x){
             hi = mid - 1;
         } else {
             lo = mid + 1;
@@ -49,20 +41,14 @@ int main(){
     cin.sync_with_stdio(0);
 
     cin >> A >> B;
-    vector<ll> FAB = factor(A + B);
-    vector<ll> FA = factor(A);
-    vector<ll> FB = factor(B);
-
-    sort(allof(FAB));
-    sort(allof(FA));
-    sort(allof(FB));
+    vector<pll> FAB = factor(A + B);
+    vector<pll> FA = factor(A);
+    vector<pll> FB = factor(B);
 
     ll ans = 1e18;
-    for(ll x : FAB){
-        ll y = (A + B) / x;
-
-        if(solve(x, y, FA, A) || solve(x, y, FB, B)){
-            ans = min(ans, 2 * (x + y));
+    for(pll p : FAB){
+        if(solve(p.first, p.second, FA) || solve(p.first, p.second, FB)){
+            ans = min(ans, 2 * (p.first + p.second));
         }
     }
 
