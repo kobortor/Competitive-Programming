@@ -13,7 +13,7 @@ const int MAXN = 30005;
 
 int H, W, N;
 
-int fungus_id = 0;
+int fungus_id = 0, extra_id = 0;
 int fungus[MAXH][MAXH];
 int ans[MAXN];
 
@@ -33,7 +33,8 @@ void fill_dfs(int r, int c){
     }
 }
 
-vector<int> adj;
+vector<int> adj[MAXN * 2];
+
 void ring_dfs(int r, int c){
     fungus[r][c] = -1;
     vector<pii> nxt = {
@@ -45,12 +46,35 @@ void ring_dfs(int r, int c){
         if (0 <= p.first && p.first < H &&
             0 <= p.second && p.second < W){
             if(fungus[p.first][p.second] >= 1){
-                adj.push_back(fungus[p.first][p.second]);
+                adj[fungus_id + extra_id].push_back(fungus[p.first][p.second]);
+                adj[fungus[p.first][p.second]].push_back(fungus_id + extra_id);
             } else if (fungus[p.first][p.second] == 0){
                 ring_dfs(p.first, p.second);
             }
         } else {
-            adj.push_back(-1);
+            adj[fungus_id + extra_id].push_back(0);
+            adj[0].push_back(fungus_id + extra_id);
+        }
+    }
+}
+
+int dist[MAXN * 2];
+void djikstra(){
+    memset(dist, 0x3f, sizeof dist);
+
+    queue<pii> q;
+    q.push({0, 0});
+    dist[0] = 0;
+
+    while(!q.empty()){
+        pii front = q.front();
+        q.pop();
+        for(int i : adj[front.first]){
+            int change = (i <= fungus_id ? 1 : 0);
+            if(front.second + change < dist[i]){
+                dist[i] = front.second + change;
+                q.push({i, dist[i]});
+            }
         }
     }
 }
@@ -78,12 +102,44 @@ int main(){
     for(int a = 0; a < H; a++){
         for(int b = 0; b < W; b++){
             if(fungus[a][b] == 0){
-                adj.clear();
+                extra_id++;
                 ring_dfs(a, b);
-                if(adj[0] != -1 && *min_element(allof(adj)) == *max_element(allof(adj))){
-                    ans[adj[0]]++;
-                }
             }
+        }
+    }
+
+    for(int a = 0; a < H; a++){
+        if(fungus[a][0] >= 1) {
+            adj[fungus[a][0]].push_back(0);
+            adj[0].push_back(fungus[a][0]);
+        }
+        if(fungus[a][W-1] >= 1) {
+            adj[fungus[a][W-1]].push_back(0);
+            adj[0].push_back(fungus[a][W-1]);
+        }
+    }
+
+    for(int a = 0; a < W; a++){
+        if(fungus[0][a] >= 1) {
+            adj[fungus[0][a]].push_back(0);
+            adj[0].push_back(fungus[0][a]);
+        }
+        if(fungus[H-1][a] >= 1) {
+            adj[fungus[H-1][a]].push_back(0);
+            adj[0].push_back(fungus[H-1][a]);
+        }
+    }
+
+    djikstra();
+
+    for(int a = 1; a <= extra_id; a++){
+        int idx = fungus_id + a;
+        if(find(allof(adj[idx]), 0) == adj[idx].end()){
+            pii best = pii(dist[adj[idx][0]], adj[idx][0]);
+            for(int i = 1; i < (int)adj[idx].size(); i++){
+                best = min(best, pii(dist[adj[idx][i]], adj[idx][i]));
+            }
+            ans[best.second]++;
         }
     }
 
