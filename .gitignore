@@ -1,5 +1,6 @@
 *.out
 *.exe
 *.txt
+*.swp
 /test
 .gitignore
