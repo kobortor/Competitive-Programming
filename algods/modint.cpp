@@ -78,6 +78,24 @@ class modint final {
             return *this = *this / other;
         }
 
+        constexpr modint& operator++() {
+            return *this = *this + modint{1};
+        }
+        constexpr modint operator++(int) {
+            long long old = x;
+            *this = *this + modint{1};
+            return modint{old};
+        }
+        
+        constexpr modint& operator--() {
+            return *this = *this - modint{1};
+        }
+        constexpr modint operator--(int) {
+            long long old = x;
+            *this = *this - modint{1};
+            return modint{old};
+        }
+
         constexpr long long value() const { return x; }
 
     private:
