@@ -8,5 +8,5 @@ function submitcf () {
     contest_id=$(basename "$(dirname "$targ")" | sed 's/^0*//')
     problem_id="${file_name%.*}"
 
-    cf submit $contest_id $problem_id $targ
+    cf submit -f $targ $contest_id $problem_id
 }
