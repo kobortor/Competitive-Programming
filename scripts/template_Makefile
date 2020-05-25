@@ -1,9 +1,15 @@
 a.out: FILE
 	@g++ FILE -std=c++17 -o a.out
 
+.io_lock:
+	@rm data/* 2> /dev/null; 			\
+	mkdir -p data;						\
+	python3 scripts/pull_data.py URL;	\
+	touch .io_lock
+
 .PHONY: clean
 clean:
-	@rm a.out 2> /dev/null
+	@rm a.out .io_lock 2> /dev/null
 
 .PHONY: manual
 manual: a.out
@@ -14,10 +20,8 @@ test: a.out input.txt
 	@./a.out < input.txt
 
 .PHONY: pull
-pull:
-	@rm data/* 2> /dev/null; 			\
-	mkdir -p data;						\
-	python3 scripts/pull_data.py URL
+pull: .io_lock
+	@:
 
 .PHONY: auto
 auto: a.out
@@ -33,7 +37,7 @@ auto: a.out
 	done
 
 .PHONY: autodiff
-autodiff: a.out
+autodiff: a.out .io_lock
 	@mkdir -p data;									\
 	for input in data/*.in; 						\
 	do 												\
@@ -41,7 +45,7 @@ autodiff: a.out
 		./a.out < "$$input" > $$tmp; 				\
 		echo $$input; 								\
 		output=$$(echo $$input | sed 's/in/out/g'); \
-		if colordiff "$$tmp" "$$output"; then 		\
+		if colordiff -y "$$tmp" "$$output"; then 	\
 			echo Identical Files; 					\
 		fi; 										\
 		echo; 										\

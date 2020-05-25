@@ -5,6 +5,7 @@
 /test
 /data
 .gitignore
+.io_lock
 
 # You should be using the scripts to generate makefiles
 /build
