@@ -1,17 +1,17 @@
-build/a.out: FILE
-	@g++ FILE -std=c++17 -o build/a.out
+a.out: FILE
+	@g++ FILE -std=c++17 -o a.out
 
 .PHONY: clean
 clean:
-	@rm build/a.out 2> /dev/null
+	@rm a.out 2> /dev/null
 
 .PHONY: manual
-manual: build/a.out
-	@./build/a.out
+manual: a.out
+	@./a.out
 
 .PHONY: test
-test: build/a.out input.txt
-	@./build/a.out < input.txt
+test: a.out input.txt
+	@./a.out < input.txt
 
 .PHONY: pull
 pull:
@@ -20,12 +20,12 @@ pull:
 	python3 scripts/pull_data.py URL
 
 .PHONY: auto
-auto:
+auto: a.out
 	@mkdir -p data;									\
 	for input in data/*.in; 						\
 	do 												\
 		tmp=$$(echo $$input | sed 's/in/tmp/g'); 	\
-		./build/a.out < "$$input" > $$tmp; 			\
+		./a.out < "$$input" > $$tmp; 				\
 		echo $$input; 								\
 		output=$$(echo $$input | sed 's/in/out/g'); \
 		pr -mts"   >>>   " $$tmp $$output; 			\
@@ -33,15 +33,15 @@ auto:
 	done
 
 .PHONY: autodiff
-autodiff:
+autodiff: a.out
 	@mkdir -p data;									\
 	for input in data/*.in; 						\
 	do 												\
 		tmp=$$(echo $$input | sed 's/in/tmp/g'); 	\
-		./build/a.out < "$$input" > $$tmp; 			\
+		./a.out < "$$input" > $$tmp; 				\
 		echo $$input; 								\
 		output=$$(echo $$input | sed 's/in/out/g'); \
-		if diff "$$input" "$$output"; then 			\
+		if colordiff "$$tmp" "$$output"; then 		\
 			echo Identical Files; 					\
 		fi; 										\
 		echo; 										\
