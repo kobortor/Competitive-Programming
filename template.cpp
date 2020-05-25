@@ -1,5 +1,7 @@
 #include<bits/stdc++.h>
 
+// Created by $%U%$ On $%h%$:$%m%$:$%s%$ on $%D%$-$%M%$-$%Y%$
+
 using namespace std;
 
 #define allof(x) (x).begin(), (x).end()

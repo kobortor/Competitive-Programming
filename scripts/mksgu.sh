@@ -16,7 +16,8 @@ function mksgu () {
         if [ -f sgu$folder_id/$problem_id.cpp ]; then
             echo File already exists
         else
-            cp template.cpp sgu/$folder_id/$problem_id.cpp
+            cf gen cpp > /dev/null
+            mv Competitive-Programming.cpp sgu/$folder_id/$problem_id.cpp
         fi
     else
         echo Error: You must be in a folder named "Competitive-Programming" use this function

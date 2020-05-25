@@ -23,7 +23,8 @@ function mkcf () {
         if [ -f cf/$contest_id/$problem_id.cpp ]; then
             echo File already exists
         else
-            cp template.cpp cf/$contest_id/$problem_id.cpp
+            cf gen cpp > /dev/null
+            mv Competitive-Programming.cpp cf/$contest_id/$problem_id.cpp
         fi
     else
         echo Error: You must be in a folder named "Competitive-Programming" use this function
