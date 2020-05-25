@@ -5,7 +5,7 @@ function mkcf () {
     fi
 
     contest_id=$1
-    problem_id=$2
+    problem_id=$( echo $2 | tr '[a-z]' '[A-Z]' )
 
     if (( ${#contest_id} > 4 )); then
         echo Contest length must be 4 characters or less
