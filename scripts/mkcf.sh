@@ -25,6 +25,7 @@ function mkcf () {
         else
             cf gen cpp > /dev/null
             mv Competitive-Programming.cpp cf/$contest_id/$problem_id.cpp
+            sed "s=FILE=cf/$contest_id/$problem_id.cpp=g" scripts/template_Makefile > Makefile
         fi
     else
         echo Error: You must be in a folder named "Competitive-Programming" use this function

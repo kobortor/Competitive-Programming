@@ -1,0 +1,14 @@
+build/a.out: FILE
+	@g++ FILE -std=c++17 -o build/a.out
+
+.PHONY: clean
+clean:
+	rm build/a.out
+
+.PHONY: test
+test: build/a.out
+	./build/a.out
+
+.PHONY: auto
+auto: build/a.out input.txt
+	./build/a.out < input.txt
