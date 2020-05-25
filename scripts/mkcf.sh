@@ -25,8 +25,13 @@ function mkcf () {
         else
             cf gen cpp > /dev/null
             mv Competitive-Programming.cpp cf/$contest_id/$problem_id.cpp
-            sed "s=FILE=cf/$contest_id/$problem_id.cpp=g" scripts/template_Makefile > Makefile
         fi
+
+        rm build/a.out
+
+        sed -e "s=FILE=cf/$contest_id/$problem_id.cpp=g" \
+            -e "s=URL=https://codeforces.com/problemset/problem/$(echo $contest_id | sed 's/^0*//')/$problem_id=g" \
+            scripts/template_Makefile > Makefile
     else
         echo Error: You must be in a folder named "Competitive-Programming" use this function
     fi

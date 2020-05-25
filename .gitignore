@@ -3,9 +3,11 @@
 *.txt
 *.swp
 /test
+/data
 .gitignore
 
 # You should be using the scripts to generate makefiles
 /build
 Makefile
 makefile
+

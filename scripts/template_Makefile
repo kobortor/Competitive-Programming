@@ -3,12 +3,43 @@ build/a.out: FILE
 
 .PHONY: clean
 clean:
-	rm build/a.out
+	@rm build/a.out
+
+.PHONY: manual
+manual: build/a.out
+	@./build/a.out
 
 .PHONY: test
-test: build/a.out
-	./build/a.out
+test: build/a.out input.txt
+	@./build/a.out < input.txt
+
+.PHONY: pull
+pull:
+	@rm data/*; \
+	python3 scripts/pull_data.py URL
 
 .PHONY: auto
-auto: build/a.out input.txt
-	./build/a.out < input.txt
+auto:
+	@for input in data/*.in; 						\
+	do 												\
+		tmp=$$(echo $$input | sed 's/in/tmp/g'); 	\
+		./build/a.out < "$$input" > $$tmp; 			\
+		echo $$input; 								\
+		output=$$(echo $$input | sed 's/in/out/g'); \
+		pr -mts"   >>>   " $$tmp $$output; 			\
+		echo; 										\
+	done
+
+.PHONY: autodiff
+autodiff:
+	@for input in data/*.in; 						\
+	do 												\
+		tmp=$$(echo $$input | sed 's/in/tmp/g'); 	\
+		./build/a.out < "$$input" > $$tmp; 			\
+		echo $$input; 								\
+		output=$$(echo $$input | sed 's/in/out/g'); \
+		if diff "$$input" "$$output"; then 			\
+			echo Identical Files; 					\
+		fi; 										\
+		echo; 										\
+	done
