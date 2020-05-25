@@ -3,7 +3,7 @@ build/a.out: FILE
 
 .PHONY: clean
 clean:
-	@rm build/a.out
+	@rm build/a.out 2> /dev/null
 
 .PHONY: manual
 manual: build/a.out
@@ -15,12 +15,14 @@ test: build/a.out input.txt
 
 .PHONY: pull
 pull:
-	@rm data/*; \
+	@rm data/* 2> /dev/null; 			\
+	mkdir -p data;						\
 	python3 scripts/pull_data.py URL
 
 .PHONY: auto
 auto:
-	@for input in data/*.in; 						\
+	@mkdir -p data;									\
+	for input in data/*.in; 						\
 	do 												\
 		tmp=$$(echo $$input | sed 's/in/tmp/g'); 	\
 		./build/a.out < "$$input" > $$tmp; 			\
@@ -32,7 +34,8 @@ auto:
 
 .PHONY: autodiff
 autodiff:
-	@for input in data/*.in; 						\
+	@mkdir -p data;									\
+	for input in data/*.in; 						\
 	do 												\
 		tmp=$$(echo $$input | sed 's/in/tmp/g'); 	\
 		./build/a.out < "$$input" > $$tmp; 			\
