@@ -4,7 +4,7 @@ a.out: FILE
 .io_lock:
 	@rm data/* 2> /dev/null; 			\
 	mkdir -p data;						\
-	python3 scripts/pull_data.py URL 	\
+	python3 scripts/pull_data.py URL;	\
 	touch .io_lock
 
 .PHONY: clean
