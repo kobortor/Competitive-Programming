@@ -45,7 +45,7 @@ auto: a.out .io_lock
 			<(cat <(echo Base) $$output) 			\
 				2> /dev/null;						\
 		echo ; 										\
-	done;
+	done
 
 .PHONY: autodiff
 autodiff: SHELL:=/bin/bash
@@ -64,10 +64,11 @@ autodiff: a.out .io_lock
 			echo Crashed / TLE!;					\
 			continue;								\
 		fi;											\
-		if diff -y 									\
+		if cmp --silent $$tmp $$output; 			\
+		then echo Identical File;					\
+		else diff -y 								\
 			<(cat <(echo You) $$tmp) 				\
-			<(cat <(echo Base) $$output); then		\
-			echo Identical Files; 					\
-		fi; 										\
+			<(cat <(echo Base) $$output);			\
+		fi;											\
 		echo; 										\
 	done
