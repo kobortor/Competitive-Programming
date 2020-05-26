@@ -16,6 +16,7 @@ class IOParser(HTMLParser):
         self.mode = NORMAL_MODE
         self.testcase = 0
         self.curfile = None
+        self.str = ""
 
     def handle_starttag(self, tag, attrs):
         if any(name == "class" and data == "input" for (name, data) in attrs):
@@ -25,19 +26,22 @@ class IOParser(HTMLParser):
         elif self.mode == INPUT_MODE and tag == "pre":
             self.testcase += 1
             self.mode = INPUT_MODE_PRE
-            self.curfile = open(os.path.join(os.getcwd(), "data/{}.in".format(self.testcase)), "w")
+            self.str = ""
+            self.curfile = os.path.join(os.getcwd(), "data/{}.in".format(self.testcase))
         elif self.mode == OUTPUT_MODE and tag == "pre":
             self.mode = OUTPUT_MODE_PRE
-            self.curfile = open(os.path.join(os.getcwd(), "data/{}.out".format(self.testcase)), "w")
+            self.str = ""
+            self.curfile = os.path.join(os.getcwd(), "data/{}.out".format(self.testcase))
 
     def handle_endtag(self, tag):
         if tag == "pre":
             self.mode = NORMAL_MODE
-            self.curfile.close()
+            with open(self.curfile, "w") as f:
+                f.write(self.str.strip())
 
     def handle_data(self, data):
         if self.mode == INPUT_MODE_PRE or self.mode == OUTPUT_MODE_PRE:
-            self.curfile.write(data + "\n")
+            self.str += data + "\n"
 
 def main():
     arg_parser = argparse.ArgumentParser(description="Fetch CodeForces input/output files")

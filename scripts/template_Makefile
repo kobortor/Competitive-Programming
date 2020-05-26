@@ -24,27 +24,43 @@ pull: .io_lock
 	@:
 
 .PHONY: auto
-auto: a.out
+auto: SHELL:=/bin/bash
+auto: a.out .io_lock
 	@mkdir -p data;									\
 	for input in data/*.in; 						\
 	do 												\
+		id=$$(echo "$$input" | 						\
+			sed "s/data\\/\(.*\)\.in/\1/g");		\
+		echo Running sample input $$id;				\
 		tmp=$$(echo $$input | sed 's/in/tmp/g'); 	\
-		./a.out < "$$input" > $$tmp; 				\
-		echo $$input; 								\
-		output=$$(echo $$input | sed 's/in/out/g'); \
-		pr -mts"   >>>   " $$tmp $$output; 			\
-		echo; 										\
-	done
+		output="data/$$id.out";						\
+		if ! timeout 3s								\
+			./a.out < "$$input" > "$$tmp" ;			\
+		then 										\
+			echo Crashed / TLE!;					\
+			continue;								\
+		fi;											\
+		pr -m -t $$tmp $$output; 					\
+		echo ; 										\
+	done;
 
 .PHONY: autodiff
+autodiff: SHELL:=/bin/bash
 autodiff: a.out .io_lock
 	@mkdir -p data;									\
 	for input in data/*.in; 						\
 	do 												\
+		id=$$(echo "$$input" | 						\
+			sed "s/data\\/\(.*\)\.in/\1/g");		\
+		echo Running sample input $$id;				\
 		tmp=$$(echo $$input | sed 's/in/tmp/g'); 	\
-		./a.out < "$$input" > $$tmp; 				\
-		echo $$input; 								\
-		output=$$(echo $$input | sed 's/in/out/g'); \
+		output="data/$$id.out";						\
+		if ! timeout 3s								\
+			./a.out < "$$input" > "$$tmp" ;			\
+		then 										\
+			echo Crashed / TLE!;					\
+			continue;								\
+		fi;											\
 		if colordiff -y "$$tmp" "$$output"; then 	\
 			echo Identical Files; 					\
 		fi; 										\
