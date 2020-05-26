@@ -72,7 +72,7 @@ autodiff: a.out .io_lock
 			printf "\\033[0;33mRTE $$code\\033[0m!\n\n";	\
 			continue;										\
 		fi;													\
-		if cmp --silent $$tmp $$output; 					\
+		if diff -b $$tmp $$output > /dev/null; 				\
 		then printf "\\033[0;32mAC\\033[0m";				\
 		else 												\
 			printf "\\033[0;31mWA\\033[0m\n";				\
