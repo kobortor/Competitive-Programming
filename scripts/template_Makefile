@@ -43,6 +43,7 @@ auto: a.out .io_lock
 			printf "\\033[0;33mRTE $$code\\033[0m!\n\n";	\
 			continue;										\
 		fi;													\
+		echo;												\
 		pr -m -t 											\
 			<(cat <(echo You) $$tmp) 						\
 			<(cat <(echo Base) $$output) 					\
