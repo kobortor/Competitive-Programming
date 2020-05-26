@@ -40,7 +40,10 @@ auto: a.out .io_lock
 			echo Crashed / TLE!;					\
 			continue;								\
 		fi;											\
-		pr -m -t $$tmp $$output; 					\
+		pr -m -t 									\
+			<(cat <(echo You) $$tmp) 				\
+			<(cat <(echo Base) $$output) 			\
+				2> /dev/null;						\
 		echo ; 										\
 	done;
 
@@ -53,7 +56,7 @@ autodiff: a.out .io_lock
 		id=$$(echo "$$input" | 						\
 			sed "s/data\\/\(.*\)\.in/\1/g");		\
 		echo Running sample input $$id;				\
-		tmp=$$(echo $$input | sed 's/in/tmp/g'); 	\
+		tmp=$$(echo $$input | sed 's/in/tmp/g');	\
 		output="data/$$id.out";						\
 		if ! timeout 3s								\
 			./a.out < "$$input" > "$$tmp" ;			\
@@ -61,7 +64,9 @@ autodiff: a.out .io_lock
 			echo Crashed / TLE!;					\
 			continue;								\
 		fi;											\
-		if colordiff -y "$$tmp" "$$output"; then 	\
+		if diff -y 									\
+			<(cat <(echo You) $$tmp) 				\
+			<(cat <(echo Base) $$output); then		\
 			echo Identical Files; 					\
 		fi; 										\
 		echo; 										\
