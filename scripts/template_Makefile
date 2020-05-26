@@ -45,8 +45,9 @@ auto: a.out .io_lock
 		fi;													\
 		echo ;												\
 		pr -m -t 											\
+			<(cat <(echo Input) $$input)					\
 			<(cat <(echo You) $$tmp) 						\
-			<(cat <(echo Base) $$output) 					\
+			<(cat <(echo Sample Out) $$output) 				\
 				2> /dev/null;								\
 		echo; 												\
 		echo; 												\
