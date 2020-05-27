@@ -1,5 +1,5 @@
 a.out: FILE
-	@g++ FILE -std=c++17 -o a.out
+	@g++ FILE -std=c++17 -o a.out -fsanitize=address -g -Wall -Wextra -Wpedantic -Wshadow
 
 .io_lock:
 	@rm data/* 2> /dev/null; 			\
