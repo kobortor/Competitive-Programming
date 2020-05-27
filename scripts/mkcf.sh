@@ -27,7 +27,7 @@ function mkcf () {
             mv Competitive-Programming.cpp cf/$contest_id/$problem_id.cpp
         fi
 
-        rm a.out .io_lock 2> /dev/null
+        rm -r a.out .io_lock a.out.dSYM 2> /dev/null
 
         sed -e "s=FILE=cf/$contest_id/$problem_id.cpp=g" \
             -e "s=URL=https://codeforces.com/problemset/problem/$(echo $contest_id | sed 's/^0*//')/$problem_id=g" \
