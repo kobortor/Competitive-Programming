@@ -19,9 +19,7 @@ for input in data/*.in; do
     then printf "\\033[0;32mAC\\033[0m"
     else
         printf "\\033[0;31mWA\\033[0m\n"
-        diff -y 
-        <(cat <(echo You) $tmp)
-        <(cat <(echo Base) $output)
+        colordiff -y $tmp $output
     fi
     echo
 done
