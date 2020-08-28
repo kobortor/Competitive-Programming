@@ -1,3 +1,5 @@
+#!/bin/bash
+
 function mkcf () {
     if (( $# != 2 )); then
         echo We need exactly 2 arguments!
@@ -29,8 +31,12 @@ function mkcf () {
 
         rm -r a.out .io_lock a.out.dSYM 2> /dev/null
 
+        url="https://codeforces.com/problemset/problem/$(echo $contest_id | sed 's/^0*//')/$problem_id"
+
+        echo "Problem title: $(python scripts/cf_title.py $url)"
+
         sed -e "s=FILE=cf/$contest_id/$problem_id.cpp=g" \
-            -e "s=URL=https://codeforces.com/problemset/problem/$(echo $contest_id | sed 's/^0*//')/$problem_id=g" \
+            -e "s=URL=$url=g" \
             scripts/template_Makefile > Makefile
     else
         echo Error: You must be in a folder named "Competitive-Programming" use this function
