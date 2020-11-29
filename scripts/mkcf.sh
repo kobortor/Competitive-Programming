@@ -33,7 +33,7 @@ function mkcf () {
 
         url="https://codeforces.com/problemset/problem/$(echo $contest_id | sed 's/^0*//')/$problem_id"
 
-        echo "Problem title: $(python scripts/cf_title.py $url)"
+        echo "Problem title: $(python3 scripts/cf_title.py $url)"
 
         sed -e "s=FILE=cf/$contest_id/$problem_id.cpp=g" \
             -e "s=URL=$url=g" \
