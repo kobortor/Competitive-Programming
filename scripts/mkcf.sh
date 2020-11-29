@@ -26,7 +26,7 @@ function mkcf () {
             echo File already exists
         else
             cf gen cpp > /dev/null
-            mv Competitive-Programming.cpp cf/$contest_id/$problem_id.cpp
+            mv template.cpp cf/$contest_id/$problem_id.cpp
         fi
 
         rm -r a.out .io_lock a.out.dSYM 2> /dev/null
