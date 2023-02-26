@@ -1,7 +1,7 @@
-*.out
-*.exe
-*.txt
-*.swp
+**.out
+**.exe
+**.txt
+**.swp
 /test
 /data
 .gitignore
@@ -14,3 +14,8 @@
 Makefile
 makefile
 
+**.in
+**.ans
+**.txt
+**.h # Those are used for Kactl headers
+**/.vscode/**
