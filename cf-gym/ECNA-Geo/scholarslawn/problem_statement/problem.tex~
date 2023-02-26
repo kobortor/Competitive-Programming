@@ -1,0 +1,14 @@
+\problemname {Scholar\'s Lawn}
+
+Famously at Cambridge, and often copied at other schools, is the tradition of the “Scholar’s Lawn”- an area of grass where Fellows of the school, or other distinguished entities, can walk on, but regular students cannot.
+\\
+So, if a student spies a Fellow walking across campus, and wishes to meet up with them, the student must walk along the paths along the outside of the grassy areas, and hope to meet the Fellow as they cross one of these paths.
+
+\section* {Input}
+Each input instance will begin with two integers $l$ and $w$, the length and width of the common area.  The next line will contain integer $n$, the number of paths  There will then follow $n$ lines, each with 4 integers, denoting the start and endpoints of each path 
+After that, there will be a line $xs ys vs$, the starting ($xs$,$ys$) position of the student (who will start on a path), and the student’s walking speed.
+The final line will consist of 5 integers $xf1 yf1 xf2 yf2 vf$, the starting ($xf1, yf1$) position of the Fellow, the ending ($xf2, yf2$) position of the Fellow (the last point the student can reach the Fellow), and the Fellow’s walking speed.
+The Fellow will walk in a straight line.  The student can walk along the borders of the grassy areas, but never inside.
+
+\section* {Output}
+Output the earliest time t when the student’s position and the Fellow’s position can intersect in a non-grassy area.  If this is impossible, output the word “Impossible”.
