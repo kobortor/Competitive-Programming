@@ -2,7 +2,7 @@
 
 if (( $# != 2 )); then
     echo We need exactly 2 arguments!
-    return
+    exit 1
 fi
 
 contest_id=$1
@@ -10,7 +10,7 @@ problem_id=$( echo $2 | tr '[a-z]' '[A-Z]' )
 
 if (( ${#contest_id} > 4 )); then
     echo Contest length must be 4 characters or less
-    return
+    exit 1
 else
     contest_id=$(printf %04d $contest_id)
 fi
